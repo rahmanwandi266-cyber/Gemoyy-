@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Surat Terbuka 💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+body{margin:0;padding:0;font-family:'Poppins',sans-serif;color:#fff;display:flex;justify-content:center;align-items:center;overflow:hidden;height:100vh;}
+.background-slide{position:fixed;top:0;left:0;width:100%;height:100%;background-size:cover;background-position:center;z-index:-2;transition:opacity 2s ease;}
+.background-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg, rgba(0,0,0,0.3), rgba(0,0,0,0.3)); z-index:-1;}
+.container{max-width:95%; padding:15px 10px;text-align:center;position:relative; z-index:1;}
+#message{font-size:14px; line-height:1.6; text-align:center; color:#fff; white-space:pre-wrap; opacity:0;}
+.heart{position:absolute; bottom:-40px; font-size:14px; animation:floatUp linear forwards; pointer-events:none; opacity:0.6; z-index:0;}
+@keyframes floatUp{0%{transform:translateY(0) scale(1);}50%{transform:translateY(-25vh) scale(1.1);}100%{transform:translateY(-100vh) scale(0.8); opacity:0;}}
+@media(max-width:480px){#message{font-size:13px; line-height:1.5;}}
+</style>
+</head>
+<body>
+
+<audio id="bgm" loop>
+    <source src="romantic-love.mp3" type="audio/mp3">
+</audio>
+
+<div class="background-slide" id="bgSlide"></div>
+<div class="background-overlay"></div>
+
+<div class="container" id="letter">
+    <div id="message"></div>
+</div>
+
+<script>
+const bgm=document.getElementById("bgm");
+const messageElement=document.getElementById("message");
+let bgSlide=document.getElementById("bgSlide");
+
+const messageLines=[
+"Aku tidak tahu sejak kapan cinta kita berubah bentuk. 🌙",
+"Dulu semuanya ringan. Kita tertawa tanpa takut kehilangan. 🌸",
+"Sekarang semuanya terasa lebih dewasa. 🌫️",
+"Lebih sunyi. Lebih berarti. 🤍",
+"Kita pernah saling melukai. 💔",
+"Pernah diam terlalu lama. 🌧️",
+"Pernah hampir menyerah. 🥀",
+"Tapi di setiap malam yang membuatku lelah, 🌌",
+"namamu tetap yang ingin aku peluk. 🫂",
+"Aku mencintaimu bukan karena semuanya selalu baik. 🌹",
+"Tapi karena bahkan saat hampir runtuh, 🌪️",
+"aku masih takut kehilangan kamu lebih dari apa pun. 🥺",
+"Kalau dunia kembali menguji kita, 🌍",
+"aku tetap ingin memilihmu. 💍",
+"Yang paling membuatku takut bukan kehilangan dunia… tapi kehilangan kamu. 💖",
+"Kalau kamu lelah… bilang ya. 🤍",
+"Bukan untuk berakhir, 🌿",
+"tapi supaya aku bisa belajar mencintaimu lagi dengan cara yang lebih baik. ✨",
+"Terimakasih sudah hadir dan mewarnai hari di setiap notif mu. 📩🤍",
+"Jika aku bukan yang kamu tuju, bisikkan padaku…",
+"Agar aku belajar merelakan dengan hati yang dewasa. 🤍",
+"Tapi jika aku memang tujuanmu…",
+"Pegang tanganku, jangan biarkan aku berjalan sendiri di dunia ini."
+];
+
+bgm.play().catch(()=>{});
+
+// Hati melayang
+function createHeart(){
+    const heart=document.createElement('div');
+    heart.className='heart';
+    heart.innerHTML=Math.random()>0.5?'❤️':'💛';
+    heart.style.left=Math.random()*90+'vw';
+    heart.style.fontSize=(Math.random()*18+12)+'px';
+    heart.style.animationDuration=(Math.random()*3+4)+'s';
+    heart.style.opacity=Math.random()*0.4+0.4;
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),8000);
+}
+setInterval(createHeart,500);
+
+// Slide foto 13 gambar fade 5 detik
+const photos=['foto1.jpg','foto2.jpg','foto3.jpg','foto4.jpg','foto5.jpg','foto6.jpg','foto7.jpg','foto8.jpg','foto9.jpg','foto10.jpg','foto11.jpg','foto12.jpg','foto13.jpg'];
+let photoIndex=0;
+function startSlide(){
+    bgSlide.style.backgroundImage=`url('${photos[photoIndex]}')`;
+    setInterval(()=>{
+        photoIndex=(photoIndex+1)%photos.length;
+        const fadeDiv=document.createElement('div');
+        fadeDiv.className='background-slide';
+        fadeDiv.style.backgroundImage=`url('${photos[photoIndex]}')`;
+        fadeDiv.style.opacity=0;
+        fadeDiv.style.transition='opacity 2s ease';
+        document.body.appendChild(fadeDiv);
+        setTimeout(()=>{fadeDiv.style.opacity=1;},50);
+        setTimeout(()=>{
+            document.body.removeChild(bgSlide);
+            fadeDiv.id='bgSlide';
+            bgSlide=fadeDiv;
+        },2000);
+    },5000);
+}
+startSlide();
+
+// Typewriter pesan
+let lineIndex=0,charIndex=0;
+function typeMessage(){
+    if(lineIndex<messageLines.length){
+        const line=messageLines[lineIndex];
+        if(charIndex<line.length){
+            messageElement.innerHTML+=line.charAt(charIndex);
+            charIndex++;
+            setTimeout(typeMessage,50);
+        }else{
+            messageElement.innerHTML+="\n";
+            lineIndex++;
+            charIndex=0;
+            setTimeout(typeMessage,300);
+        }
+    }else{confetti({particleCount:200,spread:120,origin:{y:0.6}});}
+}
+messageElement.style.opacity=1;
+typeMessage();
+</script>
+
+</body>
+</html>
